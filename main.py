@@ -1,14 +1,19 @@
 #main.py
 import os
+import sys
 from socket import *
-host = "198.21.252.154" # set to IP address of target computer
-port = 13000
+
+host = input("Enter server ip: ")
+port = int(input("Enter port number: "))
 addr = (host, port)
 UDPSock = socket(AF_INET, SOCK_DGRAM)
-while True:
-        data = input("Enter message to send or type 'exit': ")
-        UDPSock.sendto(data.encode('utf-8'), addr)
-        if data == "exit":
-            break
+data = input("Enter your name: ")
+UDPSock.sendto(data.encode('utf-8'), addr)
+
+started = False
+while(started == False):
+    break    
+
+
 UDPSock.close()
-os._exit(0)
+sys.exit()
