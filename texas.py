@@ -41,3 +41,4 @@ def plusRiver(infoarray)
 	carddrawn = deck.draw(middledeck)
 	river.append(carddrawn)
 	return infoarray
+
