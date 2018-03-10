@@ -52,7 +52,7 @@ while(playersJoined < playerCount):
     (playerName, addr) = UDPSock.recvfrom(buf)
     playerName = playerName.decode('utf8')
     for user in playerList:
-        if playerName in user:
+        if playerName.lower() in user:
             playersJoined += 1
             print("Player",playerName,"has joined.",str(playerCount-playersJoined),"left.")
             user.append(chipNumber) #name, ip, chips, [card1, card2, ...]
