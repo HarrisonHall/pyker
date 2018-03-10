@@ -11,12 +11,31 @@
 
 #deck.py
 * Card objects
+* Player
+  * Object
+    * name
+    * money
+    * hand
+* Functions
+  * Player
+    *
+  * Deck
+    * Shuffle
+    * Reset
+
+#texas.py
+* game
+ 
 
 #hands.py
 * Deck evaluation functions
+  * Let player choose hand
 
 
 ##Stretch Goals
 * Simple AI to play with
 * GUI system for playing
 * Messaging
+* More games
+* Statistics
+* Help Menu
