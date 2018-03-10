@@ -1,15 +1,15 @@
-###UML for development process
+# UML for development process
 
 
-#main.py
+### main.py
 * Client side file to run
 * Also must be ran if server wants to play
 
-#server.py
+### server.py
 * Run by server
 * Manages game
 
-#deck.py
+### deck.py
 * Card objects
 * Player
   * Object
@@ -23,16 +23,16 @@
     * Shuffle
     * Reset
 
-#texas.py
+### texas.py
 * game
  
 
-#hands.py
+### hands.py
 * Deck evaluation functions
   * Let player choose hand
 
 
-##Stretch Goals
+## Stretch Goals
 * Simple AI to play with
 * GUI system for playing
 * Messaging
