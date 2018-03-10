@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Defines the Texas Hold'em poker game.
 # Creates the river and allows player to combine river and hand.
 
@@ -42,8 +41,3 @@ def plusRiver(infoarray)
 	carddrawn = deck.draw(middledeck)
 	river.append(carddrawn)
 	return infoarray
-=======
-#texas.py
-
-#returns [p]
->>>>>>> a1a71f51a42af0992f26bed15f3084baa2531554

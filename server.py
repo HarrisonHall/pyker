@@ -1,6 +1,17 @@
 #server.py
 import os
+import sys
 from socket import *
+
+
+def sendDataToPlayer(player,data,port):
+    try:
+        ip = player[1]
+        addr = (ip, port)
+        UDPSock = socket(AF_INET, SOCK_DGRAM)
+        UDPSock.sendto(data.encode('utf-8'), addr)
+    except:
+        print("Error: Did not send correctly.")
 
 print("\nWelcome to Pyker!")
 print("Created by Harrison, Jackie, and Jacky")
@@ -14,7 +25,7 @@ chipNumber = input("Number of chips: ")
 
 #Open up files to get ip and name associated
 playerList = []
-IPFile = open("ip.txt","r")
+IPFile = open("players.txt","r")
 i = 0
 playerCount = 0
 for line in IPFile:
@@ -45,7 +56,10 @@ while(playersJoined < playerCount):
             print("Player",playerName,"has joined.",str(playerCount-playersJoined),"left.")
             user.append(chipNumber) #name, ip, chips, [card1, card2, ...]
 
+#Tell players game has begun
 print("\nThe game has begun.\n")
+for user in playerList:
+    sendDataToPlayer(user,"start",port)
 
 if gameChosen == "t":
     #Game logic goes here
