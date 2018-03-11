@@ -27,15 +27,14 @@ Creates the community cards and deals cards from the deck to the flop, turn, and
   * number of rounds
   * number of chips
 * Functions only called by self
-  
+  * send data
+  * call bluff
+  * reassign changed players
+  * betting
+  * shifting list  
 
 ### deck.py
 * Card objects
-* Player
-  * Object
-    * name
-    * money
-    * hand
 * Functions
   * Player
     *
