@@ -20,9 +20,10 @@ During development we had a few stretch goals:
 During development we did have time to add one more game, Blackjack. We also were able to impliment a primitive messaging system. 
 
 ### What would we have done differently? 
-A ton! And that's great, because it shows that we learned something. None of us were familiar with networking beforehand, and only one of us were familiar with python. We should have spent more than twenty minutes planning, and instead took an hour to create a thorough UML document, as it would have saved time and hardship later on. We should have probably used TCP instaed of the UDP protocol, but since we began the night not knowing the difference, we forgive ourselves.
+A ton! And that's great, because it shows that we learned something. None of us were familiar with networking beforehand, and only one of us were familiar with python. We should have spent more than twenty minutes planning, and instead took an hour to create a thorough UML document, as it would have saved time and hardship later on. We should have probably used TCP instaed of the UDP protocol, but since we began the night not knowing the difference, we forgive ourselves. 
 
 ### Future Plans
+We may impliment some of the stretch goals we did not have time to accomplish. Specifically, adding more games and in-game statistics. 
 
 ## Getting Started
 The below instructions will help you get up and running with Pyker. Pyker currently only works on a Linux terminal.
