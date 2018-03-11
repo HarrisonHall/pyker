@@ -11,35 +11,36 @@ ThreeKind = 300
 TwoPair = 200
 Pair = 100
 
+#Cool Stuff happens here
 #takes all functions below to
 #calculate point total of hand
-def evaluate(input):
+def evaluate(hand):
 	points = 0
 	highpoint = 0
 
-	points+=royalF(input)
-	if royalF(input) == 0:
-		if royal(input) != 0:
-			points += royal(input)
+	points+=royalF(hand)
+	if royalF(hand) == 0:
+		if royal(hand) != 0:
+			points += royal(hand)
 
-	points+=straightF(input):
-	if straightF(input) == 0:
-		if straight(input) != 0:
-			points += straight(input)
+	points+=straightF(hand):
+	if straightF(hand) == 0:
+		if straight(hand) != 0:
+			points += straight(hand)
 
-	if multi(input) > 100:
-		points += multi(input)
-	if multi(input) == 4:
+	if multi(hand) > 100:
+		points += multi(hand)
+	if multi(hand) == 4:
 		points += FourKind
-	if multi(input) == 3:
+	if multi(hand) == 3:
 		points += ThreeKind
-	if multi(input) == 2:
+	if multi(hand) == 2:
 		points += Pair
 
 	if flush(hand) != 0:
 		points += flush(hand)
 
-	for card in input:
+	for card in hand:
 		highpoint = highcard(card, highpoint)
 
 	points += highpoint
@@ -67,12 +68,12 @@ def conversion(suit)
 
 #checks card to see if high card
 #returns point value of card
-def highCard(input, highCard):
-	if input.rank > 1:
-		currCard = input.rank
-			+ conversion(input.rank)
+def highCard(hand, highCard):
+	if hand.rank > 1:
+		currCard = hand.rank
+			+ conversion(hand.rank)
 	else
-		currCard = input.rank
+		currCard = hand.rank
 			+ 13 + conversion
 	if currCard > highCard:
 		highCard = currCard
