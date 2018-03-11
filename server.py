@@ -52,7 +52,7 @@ def bet (infoArray, port):
 			if countCall != len(presentPlayers):
 				while validInput == False:
 					# Ask for input
-					cmdOut = "Would you like to fold (f), call (c), or raise (r)?"
+					cmdOut = "9Would you like to fold (f), call (c), or raise (r)?"
 					sendDataToPlayer(x, cmdOut, port)
 					# Recieve input
 					(usrIn, x[1]) = UDPSock.recvfrom(buf)
@@ -76,7 +76,7 @@ def bet (infoArray, port):
 						validInput = True
 					if usrIn == 'r':
 						if presentPlayers[i] > highestBet;
-							cmdOut = "Raising. How much do you want to raise the bet by?"
+							cmdOut = "9Raising. How much do you want to raise the bet by?"
 							sendDataToPlayer(x, cmdOut, port)
 							(pBetR, x[1]) = UDPSock.recvfrom(buf)
 							pBetR = pBetR.decode('utf8')
@@ -178,11 +178,13 @@ if gameChosen == "t":
             sendDataToPlayer(user,sendString,port)
             user.append(0)    # Bets
         replies = 0
+        '''
         while (replies < playerCount): # Check if users have replied to bet
             (message, addr) = UDPSock.recvfrom(buf)
             message = message.decode('utf8')
             if (message[:3] != "msg"):
                 replies += 1
+        '''
         infoArray = texas.initRiver(infoArray)
         for user in infoArray[0]:
             sendString = "River: " + "Hand: "
