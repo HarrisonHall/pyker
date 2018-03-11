@@ -2,9 +2,14 @@
 Poker in Python for CUhackit 2018. Currently running Texas Hold'em.
 
 ## About
-  Pyker (Python + Poker, omg!) was created by Harrison Hall, Jackie Doan, and Jacky Wong during the Clemson University Hackit 2018 competition. Pyker allows players to play poker (Texas Hold'em and Blackjack) with each from different Unix terminals over the same internet connection. Over the course of 23 hours, we coded this project from scratch, with help from mentors and, of couse, lots of documentation.
-  The three of us have lately been in a bit of a poker binge, but are often at the disadantage of finding a place to play on campus on a saturday night. With our custom engine we can play whatever poker~esque games we can think of (and code). THe only requirement is for the players to know each others ip addresses.
-  During development we had a few stretch goals:
+Pyker (Python + Poker, omg!) was created by Harrison Hall, Jackie Doan, and Jacky Wong during the 23-hour Clemson University Hackit 2018 competition. Pyker allows players to play poker (Texas Hold'em and Blackjack) with each from different Unix terminals over the same internet connection. Over the course of 23 hours, we coded this project from scratch, with help from mentors and, of couse, lots of documentation.
+  
+The three of us have lately been in a bit of a poker binge, but are often at the disadantage of finding a place to play on campus on a saturday night. With our custom engine we can play whatever poker~esque games we can think of (and code). THe only requirement is for the players to know each others ip addresses.
+
+### Goals
+Our initial goals were to simply be able to play poker with each other from our rooms via the command line. This, we accomplished. 
+
+During development we had a few stretch goals:
 * Add a messaging feature
 * An AI to play with
 * More games asside from Texas Hold'em
@@ -13,6 +18,11 @@ Poker in Python for CUhackit 2018. Currently running Texas Hold'em.
 * A gui version
 
 During development we did have time to add one more game, Blackjack. We also were able to impliment a primitive messaging system. 
+
+### What would we have done differently? 
+A ton! And that's great, because it shows that we learned something. None of us were familiar with networking beforehand, and only one of us were familiar with python. We should have spent more than twenty minutes planning, and instead took an hour to create a thorough UML document, as it would have saved time and hardship later on. We should have probably used TCP instaed of the UDP protocol, but since we began the night not knowing the difference, we forgive ourselves.
+
+### Future Plans
 
 ## Getting Started
 The below instructions will help you get up and running with Pyker. Pyker currently only works on a Linux terminal.
