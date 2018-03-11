@@ -3,7 +3,6 @@ import os
 import sys
 from socket import *
 
-
 def sendDataToPlayer(player,data,port):
     try:
         ip = player[1]
@@ -62,7 +61,7 @@ while(playersJoined < playerCount):
 print("\nThe game has begun.\n")
 for user in playerList:
     sendDataToPlayer(user,"start",port)
-
+    
 if gameChosen == "t":
     #Game logic goes here
     print("Welcome to Texas Hold'em")
@@ -72,17 +71,25 @@ if gameChosen == "t":
         if (user[2] <= 0):
             #gameover code
             keepGoing = False
+    #make deck
+    #shuffle deck
+    #collect pre-bet
     while(roundNumber <= maxRounds and keepGoing == True):
-        #shuffle deck
-        #collect money
         #deal to players
-        #
+        for user in player:
+            sendString = ""
+            sendDataToPlayer(user,sendString,port)
+        #check if users have replied
+        replies = 0
+        while (replies < playerCount):
+            (message, addr) = UDPSock.recvfrom(buf)
+            message = message.decode('utf8')
+            if (message[:3] != "msg"):
+                replies += 1
         roundNumber += 1
+        #do whatever
+
 else:
     print("Wrong game :( ")
-    UDPSock.close()
-    sys.exit()
-
-
+    
 UDPSock.close()
-sys.exit()
