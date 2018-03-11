@@ -250,7 +250,7 @@ if gameChosen == "t":
     for user in infoArray[0]:
         sendDataToPlayer(user,winner,port)
 
-if gameChosen == "t":
+if gameChosen == "b":
     print("Running Blackjack")
     keepGoing = True
     infoArray = [playerList] #Add Deck
