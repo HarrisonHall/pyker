@@ -16,47 +16,78 @@ def sendDataToPlayer(player,data,port):
         print("Error: Did not send correctly.")
     newSock.close()
 
-def betsEqual(betArray):
-    initVal = betArray[0]
-    for bet in betArray:
-        if bet != initVal:
-            return False
-    return True
+def call(infoArray, presentPlayers,  maxBet, currPlayerIp):
+	i = 0
+	for x in infoArray[0]:
+		if x[1] == currPlayerIp:
+			betDiff = maxBet - infoArray[0][i][4]
+			infoArray[0][i][2] -= betDiff
+			infoArray[0][i][4] += betDiff
+		i += 1
+	for x in presentPlayers:
+		if x[1] == currPlayerIp:
+			betDiff = maxBet - presentPlayers[i][4]
+			presentPlayers[i][2] -= betDiff
+			presentPlayers[i][4] += betDiff
+		i += 1
+	infoArray[3] += betDiff
 
-def betsHighest(betArray):
-    initVal = betArray[0]
-    for bet in betArray:
-        if bet > initVal:
-            initVal = bet
-    return initVal
-    
-def bet(infoArray,port):
-    messages = ""
-    replies = 0
-    bets = []
-    for user in range(len(infoArray)):
-        bets.append(user+1000)
-    while(betsEqual() == False): #Need to only let lower bets make it
-        (message, addr) = UDPSock.recvfrom(buf)
-        message = message.decode('utf8')
-        if (message[:3] != "msg"):
-            for user in range(len(infoArray[0])):
-                if (infoArray[0][user][1] == addr):
-                    if (infoArray[0][user][2] >= int(message)):
-                        bets[user] = int(message)
-                        infoArray[0][user][2] -= int(message)
-                    else:
-                        bets[user] = infoArray[0][user][2]
-                        infoArray[0][user][2] = 0
-        elif (message[:3] == "msg"):
-            messages += message[3:] + "\n"
-        elif (message == "chips"):
-            for user in infoArray[0]:
-                if user[1] == addr:
-                    sendDataToPlayer(user,str(user[2]),port)
-        for user in infoArray[0]:
-            sendDataToPlayer(user,messages,port)
-    return infoArray
+def bet (infoArray, port):
+	playerList = copy.copy(infoArray[0])
+	presentPlayers = copy.deepcopy(infoArray[0])
+	highestBet = 0
+	int i = 0
+	countCall = 0
+	validInput = True
+	while countCall != len(presentPlayers):
+		for x in presentPlayers:
+			if countCall != len(presentPlayers):
+				while validInput == False:
+					# Ask for input
+					cmdOut = "Would you like to fold (f), call (c), or raise (r)?"
+					sendDataToPlayer(x, cmdOut, port)
+					# Recieve input
+					(usrIn, x[1]) = UDPSock.recvfrom(buf)
+					usrIn = usrIn.decode('utf8')
+					if usrIn == 'f':
+						cmdOut = "Folding"
+						sendDataToPlayer(x, cmdOut, port)
+						del presentPlayers[i] 
+						validInput = True
+					if usrIn == 'c':
+						if presentPlayers[i] > highestBet:
+							cmdOut = "Calling"
+							sendDataToPlayer(x, cmdOut, port)
+							call(infoArray, presentPlayers,  highestBet, presentPlayers[i][1])
+							i += 1
+							countCall += 1
+						else:
+							cmdOut = "Folding"
+							sendDataToPlayer(x, cmdOut, port)
+							del presentPlayers[i]
+						validInput = True
+					if usrIn == 'r':
+						if presentPlayers[i] > highestBet;
+							cmdOut = "Raising. How much do you want to raise the bet by?"
+							sendDataToPlayer(x, cmdOut, port)
+							(pBetR, x[1]) = UDPSock.recvfrom(buf)
+							pBetR = pBetR.decode('utf8')
+							highestBet += pBetR
+							infoArray[3] += pBetR
+							presentPlayers[i][2] -= pBetR
+							i += 1
+							countCall = 1
+						else:
+							cmdOut = "Folding"
+							sendDataToPlayer(x, cmdOut, port)
+							del presentPlayers[i] 
+						validInput = True
+					else:
+						cmdOut = "Invalid Input"
+						sendDataToPlayer(x, cmdOut, port)
+						validInput = False
+	
+	return [infoArray, presentPlayers]
 
 def shiftList(someList):
     newList = someList[1:] + someList[0]
@@ -120,6 +151,7 @@ if gameChosen == "t":
     deck.shuffle(infoArray[1])
     river = []
     infoArray.append(river)
+    infoArray.append(0)    # Pot
     while(roundNumber <= maxRounds and keepGoing == True):
         infoArray[1] = deck.makedeck()
         deck.shuffle(infoArray[1])
@@ -135,6 +167,7 @@ if gameChosen == "t":
             for card in user[3]:
                 sendString += str(card) 
             sendDataToPlayer(user,sendString,port)
+            user.append(0)    # Bets
         replies = 0
         while (replies < playerCount): # Check if users have replied to bet
             (message, addr) = UDPSock.recvfrom(buf)
