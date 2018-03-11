@@ -2,6 +2,8 @@
 import os
 import sys
 from socket import *
+import deck
+import hands
 
 def sendDataToPlayer(player,data,port):
     try:
@@ -53,6 +55,10 @@ def bet(infoArray,port):
                     sendDataToPlayer(user,str(user[2]),port)
         for user in infoArray[0]:
             sendDataToPlayer(user,messages,port)
+
+def shiftList(someList):
+    newList = someList[1:] + someList[0]
+    return newList
 
 print("\nWelcome to Pyker!")
 print("Created by Harrison, Jackie, and Jacky")
@@ -112,12 +118,19 @@ if gameChosen == "t":
         if (user[2] <= 1):
             #gameover code
             keepGoing = False
-    #make deck
-    #shuffle deck
+    infoArray.append(deck.makedeck())
+    deck.shuffle(infoArray[1])
+    river = []
+    infoArray.append(river)
     while(roundNumber <= maxRounds and keepGoing == True):
+        infoArray[1] = deck.makedeck()
+        deck.shuffle(infoArray[1])
+        infoArray[2] = []
         for user in infoArray[0]: # Ante up
             user[2] -= 1
         #deal to players*
+        for user in infoArray[0]:
+            for x in range(3)
         for user in infoArray[0]:
             sendString = "Hand: "
             for card in user[3]:
@@ -129,7 +142,8 @@ if gameChosen == "t":
             message = message.decode('utf8')
             if (message[:3] != "msg"):
                 replies += 1
-        #set the river
+        for x in range(3): #start river
+            infoArray[2].append(deck.draw(infoArray[1]))
         for user in infoArray[0]:
             sendString = "River: " + "Hand: "
             for card in user[3]:
@@ -141,20 +155,21 @@ if gameChosen == "t":
             message = message.decode('utf8')
             if (message[:3] != "msg"):
                 replies += 1
-        #add one to river
+        infoArray[2].append(deck.draw(infoArray[1])) #Add to river
         while (replies < playerCount): # Check if users have replied to bet
             (message, addr) = UDPSock.recvfrom(buf)
             message = message.decode('utf8')
             if (message[:3] != "msg"):
                 replies += 1
-        #add one to river
+        infoArray[2].append(deck.draw(infoArray[1]))# Add to river
         while (replies < playerCount): # Check if users have replied to bet
             (message, addr) = UDPSock.recvfrom(buf)
             message = message.decode('utf8')
             if (message[:3] != "msg"):
                 replies += 1
-        
-
+        #Evaluate winner
+        #Send winner message
+        infoArray[0] = shiftList(infoArray[0])
                 
         for user in infoArray[0]:
             if (user[2] <= 1):
@@ -164,5 +179,5 @@ if gameChosen == "t":
 
 else:
     print("Wrong game :( ")
-pp    
+
 UDPSock.close()
