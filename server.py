@@ -5,7 +5,7 @@ from socket import *
 import deck
 import hands
 import texas
-import blackjack
+#import blackjack
 import copy
 
 def sendDataToPlayer(player,data,port):
@@ -259,7 +259,7 @@ if gameChosen == "t":
     winner = "The winner is " + winner
     for user in infoArray[0]:
         sendDataToPlayer(user,winner,port)
-
+'''
 if gameChosen == "b":
     print("Running Blackjack")
     keepGoing = True
@@ -410,5 +410,5 @@ if gameChosen == "b":
     topPoints = 0
 else:
     print("Wrong game :( ")
-
+'''
 UDPSock.close()
