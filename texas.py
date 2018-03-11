@@ -29,7 +29,7 @@ def initRiver(infoArray):
     infoArray[2] = []
     for x in range(3):
         cardDrawn = deck.draw(infoArray[1])
-        river.append(cardDrawn)
+        infoArray[2].append(cardDrawn)
     return infoArray
 '''
 # Deals one card to each player
