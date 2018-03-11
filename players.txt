@@ -1,4 +1,3 @@
 List IP Addresses Below
 -----------------------
-jacky 198.21.141.51
 harry 198.21.252.154
