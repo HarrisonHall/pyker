@@ -7,6 +7,7 @@ class card(object):
 		def __init__(self ,rank, suit):
 			self.rank = rank #number
 			self.suit = suit #character
+
 		def __repr__(self):
 			return "(suit)(rank)".format(
 				suit = suit[self.suit], rank = rank[self.rank])
