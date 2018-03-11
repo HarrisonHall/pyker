@@ -1,10 +1,10 @@
 # Pyker
-Poker in Python for CUhackit 2018. Currently running Texas Hold'em.
+Poker in Python for CUhackit 2018. Currently running Texas Hold'em and Blackjack.
 
 ## About
-Pyker (Python + Poker, omg!) was created by Harrison Hall, Jackie Doan, and Jacky Wong during the 23-hour Clemson University Hackit 2018 competition. Pyker allows players to play poker (Texas Hold'em and Blackjack) with each from different Unix terminals over the same internet connection. Over the course of 23 hours, we coded this project from scratch, with help from mentors and, of couse, lots of documentation.
+Pyker (Python + Poker, omg!) was created by Harrison Hall, Jackie Doan, and Jacky Wong during the 23-hour CUhackit (Clemson University Hackit) 2018 competition. Pyker allows players to play poker (Texas Hold'em and Blackjack) with each from different Unix terminals over the same internet connection. Over the course of 23 hours, we coded this project from scratch, with help from mentors and, of couse, lots of documentation.
   
-The three of us have lately been in a bit of a poker binge, but are often at the disadantage of finding a place to play on campus on a saturday night. With our custom engine we can play whatever poker~esque games we can think of (and code). THe only requirement is for the players to know each others ip addresses.
+The three of us have lately been in a bit of a poker binge, but are often at the disadantage of finding a place to play on campus on a saturday night. With our custom engine we can play whatever poker~esque games we can think of (and code). The only requirement is for the players to know each others IP addresses.
 
 ### Goals
 Our initial goals were to simply be able to play poker with each other from our rooms via the command line. This, we accomplished. 
@@ -12,10 +12,10 @@ Our initial goals were to simply be able to play poker with each other from our 
 During development we had a few stretch goals:
 * Add a messaging feature
 * An AI to play with
-* More games asside from Texas Hold'em
+* More games aside from Texas Hold'em
 * A help menu
 * In-game hand statistics
-* A gui version
+* A GUI version
 
 During development we did have time to add one more game, Blackjack. We also were able to impliment a primitive messaging system. 
 
@@ -44,6 +44,11 @@ sudo apt-get install python3.6
 Arch Linux
 ```bash
 sudo pacman -S python
+```
+
+Fedora
+```bash
+sudo dnf install python3
 ```
 
 ## Installing and Running
