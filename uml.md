@@ -63,11 +63,3 @@ Creates the community cards and deals cards from the deck to the flop, turn, and
 * players must match this name
 * name must be lowercase
 * no unnecessary spaces
-
-## Stretch Goals
-* Simple AI to play with
-* GUI system for playing
-* [Included] Messaging
-* More games
-* Statistics
-* Help Menu
