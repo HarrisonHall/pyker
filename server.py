@@ -1,17 +1,21 @@
-#server.py
+#server.pyp
 import os
 import sys
 from socket import *
 import deck
 import hands
 import texas
+import copy
 
 def sendDataToPlayer(player,data,port):
     try:
         ip = player[1]
+        print(ip,data)
         addr = (ip, port+1)
         newSock = socket(AF_INET, SOCK_DGRAM)
+        print("break2")
         newSock.sendto(data.encode('utf8'), addr)
+        print("break3")
     except:
         print("Error: Did not send correctly.")
     newSock.close()
@@ -40,7 +44,7 @@ def reassign(infoArray, presentPlayers):
                                 infoArray[0][i] = presentPlayers[i]
                 i += 1
 
-def bet (infoArray, port):
+def bet(infoArray, port):
         playerList = copy.copy(infoArray[0])
         presentPlayers = copy.deepcopy(infoArray[0])
         highestBet = 0
@@ -53,9 +57,10 @@ def bet (infoArray, port):
                                 while validInput == False:
                                         # Ask for input
                                         cmdOut = "9Would you like to fold (f), call (c), or raise (r)?"
+                                        print(str(x))
                                         sendDataToPlayer(x, cmdOut, port)
                                         # Recieve input
-                                        (usrIn, x[1]) = UDPSock.recvfrom(buf)
+                                        (usrIn, addr) = UDPSock.recvfrom(buf)
                                         usrIn = usrIn.decode('utf8')
                                         if usrIn == 'f':
                                                 cmdOut = "Folding"
@@ -110,7 +115,7 @@ port = int(input("What is the port number: "))
 print("Choose a game.")
 gameChosen = input("texas(t): ")
 maxRounds = int(input("Number of rounds: "))
-chipNumber = input("Number of chips: ")
+chipNumber = int(input("Number of chips: "))
 
 #Open up files to get ip and name associated
 playerList = []
@@ -144,7 +149,7 @@ while(playersJoined < playerCount):
             playersJoined += 1
             print("Player",playerName,"has joined.",str(playerCount-playersJoined),"left.")
             user.append(chipNumber) #name, ip, chips, [card1, card2, ...]
-            sendDataToPlayer(user,"wassap",port)
+            sendDataToPlayer(user,"You have connected. 1 in 12.",port)
 
 #Tell players game has begun
 print("\nThe game has begun.\n")
@@ -153,7 +158,7 @@ for user in playerList:
     
 if gameChosen == "t":
     print("Running Texas Hold'em")
-    keepPlaying = True
+    keepGoing = True
     roundNumber = 1
     infoArray = [playerList] #Add Deck
     infoArray.append(deck.makedeck())
@@ -166,10 +171,12 @@ if gameChosen == "t":
         deck.shuffle(infoArray[1])
         infoArray[2] = []
         for user in infoArray[0]: # Ante up
-            user[2] -= 1
+            user[2] += -1
         for user in infoArray[0]:
+            if (len(user) < 4):
+                user.append([])
             user[3] = []
-            for x in range(3):
+            for x in range(2):
                 user[3].append(deck.draw(infoArray[1]))
         for user in infoArray[0]:
             sendString = "Hand: "
@@ -187,17 +194,20 @@ if gameChosen == "t":
         '''
         infoArray = texas.initRiver(infoArray)
         for user in infoArray[0]:
-            sendString = "River: " + "Hand: "
+            sendString = ""
             for card in user[3]:
-                sendString += str(card) 
+                sendString += str(card)
+            sendString += " | "
+            for card in infoArray[2]:
+                sendString += str(card)
             sendDataToPlayer(user,sendString,port)
         replies = 0
         currentPlayerArray = [infoArray,infoArray[0]]
-        currentPlayerArray = bet(currentPlayerArray[1],port)
+        currentPlayerArray = bet(currentPlayerArray[0],port)
         infoArray = texas.plusRiver(infoArray)
-        currentPlayerArray = bet(currentPlayerArray[1],port)
+        currentPlayerArray = bet(currentPlayerArray[0],port)
         infoArray = texas.plusRiver(infoArray)
-        currentPlayerArray = bet(currentPlayerArray[1],port)
+        currentPlayerArray = bet(currentPlayerArray[0],port)
         #players choose hands start
         for user in currentPlayerArray[0]:
             cardString = ""
