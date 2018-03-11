@@ -13,9 +13,7 @@ def sendDataToPlayer(player,data,port):
         print(ip,data)
         addr = (ip, port+1)
         newSock = socket(AF_INET, SOCK_DGRAM)
-        print("break2")
         newSock.sendto(data.encode('utf8'), addr)
-        print("break3")
     except:
         print("Error: Did not send correctly.")
     newSock.close()
@@ -57,7 +55,7 @@ def bet(infoArray, port):
                                 while validInput == False:
                                         # Ask for input
                                         cmdOut = "9Would you like to fold (f), call (c), or raise (r)?"
-                                        print(str(x))
+                                        print("superBreak",str(x))
                                         sendDataToPlayer(x, cmdOut, port)
                                         # Recieve input
                                         (usrIn, addr) = UDPSock.recvfrom(buf)
@@ -196,12 +194,11 @@ if gameChosen == "t":
         for user in infoArray[0]:
             sendString = ""
             for card in user[3]:
-                sendString += str(card)
+                sendString += str(card) + " "
             sendString += " | "
             for card in infoArray[2]:
-                sendString += str(card)
+                sendString += str(card) + " "
             sendDataToPlayer(user,sendString,port)
-        replies = 0
         currentPlayerArray = [infoArray,infoArray[0]]
         currentPlayerArray = bet(currentPlayerArray[0],port)
         infoArray = texas.plusRiver(infoArray)
