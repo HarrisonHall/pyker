@@ -18,10 +18,10 @@ def initialDeal(infoArray)
 	playerList = copy.copy(infoArray[0])
 	middleDeck = copy.copy(infoArray[1])
 	for x in playerList:
-		playerList[x][3] = []
-		for x in range(2)
+		x[3] = []
+		for y in range(2)
 			cardDrawn = deck.draw(middleDeck)
-			playerList[x][3].append(cardDrawn)
+			x[3].append(cardDrawn)
 	return infoArray
 
 # Creates the river
@@ -56,7 +56,7 @@ def replaceHand(infoArray, playerChoice)
 	river = copy.copy(infoArray[2])
 	playerList = copy.copy(infoArray[0])
 	for x in playerList:
-		playerList[x][3] = []
+		x[3] = []
 		for y in playerChoice:
 			playerList[x][3].append(playerChoice[y])
 	return infoArray

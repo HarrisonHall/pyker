@@ -21,7 +21,7 @@ newSock.bind(newAddr)
 while(started == False):
     (startString,addr) = newSock.recvfrom(buf)
     startString = str(startString.decode('utf8'))
-    if startString == "start":
+    if startString == "t":
         started = True
         print("It started, this works!")
     else:
@@ -52,5 +52,3 @@ while(returnInfo != "game over"):
     (hand,addr) = newSock.recvfrom(buf)
     hand = str(startString.decode('utf8'))
     print("Bet: Hand:",startString)
-    
-UDPSock.close()
