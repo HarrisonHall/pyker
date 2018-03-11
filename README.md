@@ -2,9 +2,9 @@
 Poker in Python for CUhackit 2018. Currently running Texas Hold'em.
 
 ## About
-Pyker (Python + Poker, omg!) was created by Harrison Hall, Jackie Doan, and Jacky Wong during the Clemson University Hackit 2018 competition. Pyker allows players to play poker (Texas Hold'em and Blackjack) with each from different Unix terminals over the same internet connection. Over the course of 23 hours, we coded this project from scratch, with help from mentors and, of couse, lots of documentation.
-The three of us have lately been in a bit of a poker binge, but are often at the disadantage of finding a place to play on campus on a saturday night. With our custom engine we can play whatever poker~esque games we can think of (and code). THe only requirement is for the players to know each others ip addresses.
-During development we had a few stretch goals
+  Pyker (Python + Poker, omg!) was created by Harrison Hall, Jackie Doan, and Jacky Wong during the Clemson University Hackit 2018 competition. Pyker allows players to play poker (Texas Hold'em and Blackjack) with each from different Unix terminals over the same internet connection. Over the course of 23 hours, we coded this project from scratch, with help from mentors and, of couse, lots of documentation.
+  The three of us have lately been in a bit of a poker binge, but are often at the disadantage of finding a place to play on campus on a saturday night. With our custom engine we can play whatever poker~esque games we can think of (and code). THe only requirement is for the players to know each others ip addresses.
+  During development we had a few stretch goals:
 * Add a messaging feature
 * An AI to play with
 * More games asside from Texas Hold'em
