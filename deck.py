@@ -17,6 +17,7 @@ class card(object):
 		def __init__(self ,rank, suit):
 			self.rank = rank #number
 			self.suit = suit #character
+
 def makedeck():
         mdeck = [card(rank, suit) for
 		 rank, suit in itertools.product(
