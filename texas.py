@@ -1,44 +1,63 @@
 # Defines the Texas Hold'em poker game.
 # Creates the river and allows player to combine river and hand.
 
+'''
+Outline:
+infoArray is the list of game data: player, deck, and river
+initialDeal(infoArray) - deals 3 cards to each player
+initRiver(infoArray) - creates and deals the flop
+dealCard(infoArray) - deals 1 card to each player
+plusRiver(infoArray) - deals 1 card to the community (called river here)
+replaceHand(infoArray, playerChoice) - replaces the player's hand to their choice of 5 cards from the river and original hand
+'''
+
 import deck
 import copy
 
 # Initial dealing of cards
-def initialDeal(infoarray)
-	playerlist = copy.shallowcopy(infoarray[0])
-	middledeck = copy.shallowcopy(infoarray[1])
-	for x in playerlist:
-		playerlist[x][3] = []
+def initialDeal(infoArray)
+	playerList = copy.copy(infoArray[0])
+	middleDeck = copy.copy(infoArray[1])
+	for x in playerList:
+		playerList[x][3] = []
 		for x in range(2)
-			carddrawn = deck.draw(middledeck)
-			playerlist[x][3].append(carddrawn)
-	return infoarray
+			cardDrawn = deck.draw(middleDeck)
+			playerList[x][3].append(cardDrawn)
+	return infoArray
 
 # Creates the river
-def initRiver(infoarray)
-	river = copy.shallowcopy(infoarray[2])
+def initRiver(infoArray)
+	river = copy.copy(infoArray[2])
 	river = []
-	middledeck = copy.shallowcopy(infoarray[1])
+	middleDeck = copy.copy(infoArray[1])
 	for x in range(3)
-		carddrawn = deck.draw(middledeck)
-		river.append(carddrawn)
-	return infoarray
-
+		cardDrawn = deck.draw(middleDeck)
+		river.append(cardDrawn)
+	return infoArray
+'''
 # Deals one card to each player
-def dealCard(infoarray)	
-	playerlist = copy.shallowcopy(infoarray[0])
-	middledeck = copy.shallowcopy(infoarray[1])
-	for x in playerlist:
-		carddrawn = deck.draw(middledeck)
-		playerlist[x][3].append(carddrawn)
-	return infoarray
-
+def dealCard(infoArray)	
+	playerList = copy.copy(infoArray[0])
+	middleDeck = copy.copy(infoArray[1])
+	for x in playerList:
+		cardDrawn = deck.draw(middleDeck)
+		playerList[x][3].append(cardDrawn)
+	return infoArray
+'''
 # Places one card to river
-def plusRiver(infoarray)
-	river = copy.shallowcopy(infoarray[2])
-	middledeck = copy.shallowcopy(infoarray[1])
-	carddrawn = deck.draw(middledeck)
-	river.append(carddrawn)
-	return infoarray
+def plusRiver(infoArray)
+	river = copy.copy(infoArray[2])
+	middleDeck = copy.copy(infoArray[1])
+	cardDrawn = deck.draw(middleDeck)
+	river.append(cardDrawn)
+	return infoArray
 
+# Replaces player's "hand" with their choices from river and hand
+def replaceHand(infoArray, playerChoice)
+	river = copy.copy(infoArray[2])
+	playerList = copy.copy(infoArray[0])
+	for x in playerList:
+		playerList[x][3] = []
+		for y in playerChoice:
+			playerList[x][3].append(playerChoice[y])
+	return infoArray
