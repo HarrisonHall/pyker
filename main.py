@@ -26,23 +26,21 @@ while(started == False):
         print("It started, this works!")
     else:
         print(startString)
-        #print("Ooops. Try restarting server and main.")
-        #UDPSock.close()
-        #sys.exit()
         
 #Manage betting process loop
 #Card picking loop
 recieveString = "im crying im so sad this better frickin work"
 while(recieveString[:8] != "The Winn"):
-    (recieveString,addr) = newSock.recvfrom(buf)
+    (recieveString,newAddr) = newSock.recvfrom(buf) #new
     recieveString = str(recieveString.decode('utf8'))
     if (recieveString[0] == "9" or recieveString[0] == " "):
         recieveString = recieveString[1:]
-        UDPSock = socket(AF_INET, SOCK_DGRAM)
-        userInput = input(recieveString)
-        UDPSock.sendto(userInput.encode('utf8'), addr)
+        userInput = input(recieveString + " ")
+        UDPSock.sendto(userInput.encode('utf8'), addr) #new
+        print("sent")
     else:
         print(recieveString)
+
     
 
 (gameEndString,addr) = newSock.recvfrom(buf)

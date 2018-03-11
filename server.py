@@ -58,7 +58,9 @@ def bet(infoArray, port):
                                         print("superBreak",str(x))
                                         sendDataToPlayer(x, cmdOut, port)
                                         # Recieve input
-                                        (usrIn, addr) = UDPSock.recvfrom(buf)
+                                        UDPSock = socket(AF_INET,SOCK_DGRAM)
+                                        newAddr = ("",port+1)
+                                        (usrIn, newAddr) = UDPSock.recvfrom(buf)
                                         usrIn = usrIn.decode('utf8')
                                         if usrIn == 'f':
                                                 cmdOut = "Folding"
