@@ -53,6 +53,4 @@ while(returnInfo != "game over"):
     hand = str(startString.decode('utf8'))
     print("Bet: Hand:",startString)
     
-
 UDPSock.close()
-sys.exit()

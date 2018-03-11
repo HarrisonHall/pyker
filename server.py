@@ -91,8 +91,5 @@ if gameChosen == "t":
 
 else:
     print("Wrong game :( ")
-    UDPSock.close()
-    sys.exit()
-
+    
 UDPSock.close()
-sys.exit()
