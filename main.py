@@ -32,6 +32,19 @@ while(started == False):
         
 #Manage betting process loop
 #Card picking loop
+recieveString = "im crying im so sad this better frickin work"
+while(recieveString[:8] != "The Winn"):
+    (recieveString,addr) = newSock.recvfrom(buf)
+    recieveString = str(startString.decode('utf8'))
+    if (recieveString[0] == "9"):
+        recieveString = recieveString[1:]
+        UDPSock = socket(AF_INET, SOCK_DGRAM)
+        userInput = input("Enter your name: ")
+        UDPSock.sendto(userInput.encode('utf8'), addr)
+    else:
+        print(recieveString)
+    
+
 (gameEndString,addr) = newSock.recvfrom(buf)
 gameEndString = str(startString.decode('utf8'))
 print(gameEndString)
