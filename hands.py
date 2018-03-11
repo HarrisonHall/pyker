@@ -1,5 +1,5 @@
 import deck
-import collection
+#import collection
 
 RoyalF = 900
 StraightF = 800
@@ -23,7 +23,7 @@ def evaluate(hand):
 		if royal(hand) != 0:
 			points += royal(hand)
 
-	points+=straightF(hand):
+	points+=straightF(hand)
 	if straightF(hand) == 0:
 		if straight(hand) != 0:
 			points += straight(hand)
@@ -52,7 +52,7 @@ def evaluate(hand):
 #numeric value from 0-3
 #then multiplies by 13 for
 #point value of suit
-def conversion(suit)
+def conversion(suit):
 	suitNum = 0
 	points = 0
 	if suit == 'C':
@@ -70,11 +70,9 @@ def conversion(suit)
 #returns point value of card
 def highCard(hand, highCard):
 	if hand.rank > 1:
-		currCard = hand.rank
-			+ conversion(hand.rank)
-	else
-		currCard = hand.rank
-			+ 13 + conversion
+		currCard = hand.rank + conversion(hand.rank)
+	else:
+		currCard = hand.rank + 13 + conversion
 	if currCard > highCard:
 		highCard = currCard
 	return highcard

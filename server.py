@@ -17,86 +17,86 @@ def sendDataToPlayer(player,data,port):
     newSock.close()
 
 def call(infoArray, presentPlayers,  maxBet, currPlayerIp):
-	i = 0
-	for x in infoArray[0]:
-		if x[1] == currPlayerIp:
-			betDiff = maxBet - infoArray[0][i][4]
-			infoArray[0][i][2] -= betDiff
-			infoArray[0][i][4] += betDiff
-		i += 1
-	for x in presentPlayers:
-		if x[1] == currPlayerIp:
-			betDiff = maxBet - presentPlayers[i][4]
-			presentPlayers[i][2] -= betDiff
-			presentPlayers[i][4] += betDiff
-		i += 1
-	infoArray[3] += betDiff
+        i = 0
+        for x in infoArray[0]:
+                if x[1] == currPlayerIp:
+                        betDiff = maxBet - infoArray[0][i][4]
+                        infoArray[0][i][2] -= betDiff
+                        infoArray[0][i][4] += betDiff
+                i += 1
+        for x in presentPlayers:
+                if x[1] == currPlayerIp:
+                        betDiff = maxBet - presentPlayers[i][4]
+                        presentPlayers[i][2] -= betDiff
+                        presentPlayers[i][4] += betDiff
+                i += 1
+        infoArray[3] += betDiff
 
 def reassign(infoArray, presentPlayers):
-	i = 0
-	for x in infoArray[0]:
-		for y in presentPlayers:
-			if x[1] == y[1]:
-				infoArray[0][i] = presentPlayers[i]
-		i += 1
+        i = 0
+        for x in infoArray[0]:
+                for y in presentPlayers:
+                        if x[1] == y[1]:
+                                infoArray[0][i] = presentPlayers[i]
+                i += 1
 
 def bet (infoArray, port):
-	playerList = copy.copy(infoArray[0])
-	presentPlayers = copy.deepcopy(infoArray[0])
-	highestBet = 0
-	int i = 0
-	countCall = 0
-	validInput = False
-	while countCall != len(presentPlayers):
-		for x in presentPlayers:
-			if countCall != len(presentPlayers):
-				while validInput == False:
-					# Ask for input
-					cmdOut = "9Would you like to fold (f), call (c), or raise (r)?"
-					sendDataToPlayer(x, cmdOut, port)
-					# Recieve input
-					(usrIn, x[1]) = UDPSock.recvfrom(buf)
-					usrIn = usrIn.decode('utf8')
-					if usrIn == 'f':
-						cmdOut = "Folding"
-						sendDataToPlayer(x, cmdOut, port)
-						del presentPlayers[i] 
-						validInput = True
-					if usrIn == 'c':
-						if presentPlayers[i] > highestBet:
-							cmdOut = "Calling"
-							sendDataToPlayer(x, cmdOut, port)
-							call(infoArray, presentPlayers,  highestBet, presentPlayers[i][1])
-							i += 1
-							countCall += 1
-						else:
-							cmdOut = "Folding"
-							sendDataToPlayer(x, cmdOut, port)
-							del presentPlayers[i]
-						validInput = True
-					if usrIn == 'r':
-						if presentPlayers[i] > highestBet;
-							cmdOut = "9Raising. How much do you want to raise the bet by?"
-							sendDataToPlayer(x, cmdOut, port)
-							(pBetR, x[1]) = UDPSock.recvfrom(buf)
-							pBetR = pBetR.decode('utf8')
-							highestBet += pBetR
-							infoArray[3] += pBetR
-							presentPlayers[i][2] -= pBetR
-							i += 1
-							countCall = 1
-						else:
-							cmdOut = "Folding"
-							sendDataToPlayer(x, cmdOut, port)
-							del presentPlayers[i] 
-						validInput = True
-					else:
-						cmdOut = "Invalid Input"
-						sendDataToPlayer(x, cmdOut, port)
-						validInput = False
-	
-	reassign(infoArray, presentPlayers)
-	return [infoArray, presentPlayers]
+        playerList = copy.copy(infoArray[0])
+        presentPlayers = copy.deepcopy(infoArray[0])
+        highestBet = 0
+        i = 0
+        countCall = 0
+        validInput = False
+        while countCall != len(presentPlayers):
+                for x in presentPlayers:
+                        if countCall != len(presentPlayers):
+                                while validInput == False:
+                                        # Ask for input
+                                        cmdOut = "9Would you like to fold (f), call (c), or raise (r)?"
+                                        sendDataToPlayer(x, cmdOut, port)
+                                        # Recieve input
+                                        (usrIn, x[1]) = UDPSock.recvfrom(buf)
+                                        usrIn = usrIn.decode('utf8')
+                                        if usrIn == 'f':
+                                                cmdOut = "Folding"
+                                                sendDataToPlayer(x, cmdOut, port)
+                                                del presentPlayers[i] 
+                                                validInput = True
+                                        if usrIn == 'c':
+                                                if presentPlayers[i] > highestBet:
+                                                        cmdOut = "Calling"
+                                                        sendDataToPlayer(x, cmdOut, port)
+                                                        call(infoArray, presentPlayers,  highestBet, presentPlayers[i][1])
+                                                        i += 1
+                                                        countCall += 1
+                                                else:
+                                                        cmdOut = "Folding"
+                                                        sendDataToPlayer(x, cmdOut, port)
+                                                        del presentPlayers[i]
+                                                validInput = True
+                                        if usrIn == 'r':
+                                                if presentPlayers[i] > highestBet:
+                                                        cmdOut = "9Raising. How much do you want to raise the bet by?"
+                                                        sendDataToPlayer(x, cmdOut, port)
+                                                        (pBetR, x[1]) = UDPSock.recvfrom(buf)
+                                                        pBetR = pBetR.decode('utf8')
+                                                        highestBet += pBetR
+                                                        infoArray[3] += pBetR
+                                                        presentPlayers[i][2] -= pBetR
+                                                        i += 1
+                                                        countCall = 1
+                                                else:
+                                                        cmdOut = "Folding"
+                                                        sendDataToPlayer(x, cmdOut, port)
+                                                        del presentPlayers[i] 
+                                                validInput = True
+                                        else:
+                                                cmdOut = "Invalid Input"
+                                                sendDataToPlayer(x, cmdOut, port)
+                                                validInput = False
+        
+        reassign(infoArray, presentPlayers)
+        return [infoArray, presentPlayers]
 
 def shiftList(someList):
     newList = someList[1:] + someList[0]
@@ -212,7 +212,7 @@ if gameChosen == "t":
             while(len(cardHandArray) < 5):
                 sendDataToPlayer(user,"Type a number 0-6",port)
                 (usrIn,addr) = UDPSock.recvfrom(buf)
-		usrIn = usrIn.decode('utf8')
+                usrIn = usrIn.decode('utf8')
                 chosenCard = int(usrIn)
                 if totalCards[chosenCard] not in cardHandArray:
                     cardHandArray.append(totalCards[chosenCard])
@@ -235,7 +235,7 @@ if gameChosen == "t":
         infoArray[0] = shiftList(infoArray[0])                
         for user in infoArray[0]:
             if (user[2] <= 1):
-            keepGoing = False
+                keepGoing = False
         roundNumber += 1
     topPoints = 0
     winner = ""
@@ -243,7 +243,7 @@ if gameChosen == "t":
         if (user[2] > topPoints):
             topPoints = hands.evaluate(user[3])
     for user in infoArray[0]:
-        if (user[2] == topPoints)):
+        if (user[2] == topPoints):
             winner = user[0]
     winner = "The winner is " + winner
     for user in infoArray[0]:
