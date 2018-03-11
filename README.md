@@ -1,5 +1,5 @@
 # Pyker
-Poker in Python for CUhackit 2018. Currently running Texas Hold'em and Blackjack. Networking must be redone before use.
+Poker in Python for CUhackit 2018. Currently running Texas Hold'em and Blackjack. Pyker is a poker handler, designed with open-source in mind to be used/adapted to any network.
 
 ## About
 Pyker (Python + Poker, omg!) was created by Harrison Hall, Jackie Doan, and Jacky Wong during the 23-hour CUhackit (Clemson University Hackit) 2018 competition. Pyker allows players to play poker (Texas Hold'em and Blackjack) with each from different Unix terminals over the same internet connection. Over the course of 23 hours, we coded this project from scratch, with help from mentors and, of couse, lots of documentation.
@@ -20,7 +20,7 @@ During development we had a few stretch goals:
 During development we did have time to add one more game, Blackjack. We also were able to impliment a primitive messaging system. Networking must be fixed.
 
 ### What would we have done differently? 
-A ton! And that's great, because it shows that we learned something. None of us were familiar with networking beforehand, and only one of us were familiar with python. We should have spent more than twenty minutes planning, and instead took an hour to create a thorough UML document, as it would have saved time and hardship later on. We should have probably used TCP instaed of the UDP protocol, but since we began the night not knowing the difference, we forgive ourselves. 
+A ton! And that's great, because it shows that we learned something. None of us were familiar with networking beforehand, and only one of us were familiar with python. We should have spent more than twenty minutes planning, and instead took an hour to create a thorough UML document, as it would have saved time and hardship later on. We should have probably used TCP instead of the UDP protocol, but since we began the night not knowing the difference, we forgive ourselves. The networking demonstartion may not be complete, but our project is successful.
 
 ### Future Plans
 We may impliment some of the stretch goals we did not have time to accomplish. Specifically, adding more games and in-game statistics. 
