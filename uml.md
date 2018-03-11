@@ -1,5 +1,16 @@
-# UML for development process
+# Bullet UML for development process
 
+## Outline
+### main.py
+Program which all player run and interact with in order to play the game.
+### server.py
+Program which all player's main.py programs interact with in order to send and recieve data to allow for the game to be played.
+### deck.py
+Creates a standard deck of 52 cards, draws a card, and shuffles the deck.
+### hands.py
+Evaluates the player's hand for the standard poker hands.
+### texas.py
+Creates the community cards and deals cards from the deck to the flop, turn, and river. Also deals an initial 2 cards to all players.
 
 ### main.py
 * Client side file to run
