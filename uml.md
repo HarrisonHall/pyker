@@ -12,6 +12,8 @@ Evaluates the player's hand for the standard poker hands.
 ### texas.py
 Creates the community cards and deals cards from the deck to the flop, turn, and river. Also deals an initial 2 cards to all players.
 
+## Functions
+
 ### main.py
 * Client side file to run
 * Also must be ran if server wants to play
@@ -24,6 +26,7 @@ Creates the community cards and deals cards from the deck to the flop, turn, and
   * port
   * number of rounds
   * number of chips
+* Functions only called by self
   
 
 ### deck.py
