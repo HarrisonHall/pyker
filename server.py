@@ -5,6 +5,7 @@ from socket import *
 import deck
 import hands
 import texas
+import blackjack
 
 def sendDataToPlayer(player,data,port):
     try:
@@ -40,9 +41,9 @@ def reassign(infoArray, presentPlayers):
                                 infoArray[0][i] = presentPlayers[i]
                 i += 1
 
-def bet (infoArray, port):
+def bet (infoArray, playersAvailable, port):
         playerList = copy.copy(infoArray[0])
-        presentPlayers = copy.deepcopy(infoArray[0])
+        presentPlayers = copy.copy(playersAvailable)
         highestBet = 0
         i = 0
         countCall = 0
@@ -62,7 +63,7 @@ def bet (infoArray, port):
                                                 sendDataToPlayer(x, cmdOut, port)
                                                 del presentPlayers[i] 
                                                 validInput = True
-                                        if usrIn == 'c':
+                                        elif usrIn == 'c':
                                                 if presentPlayers[i] > highestBet:
                                                         cmdOut = "Calling"
                                                         sendDataToPlayer(x, cmdOut, port)
@@ -74,7 +75,7 @@ def bet (infoArray, port):
                                                         sendDataToPlayer(x, cmdOut, port)
                                                         del presentPlayers[i]
                                                 validInput = True
-                                        if usrIn == 'r':
+                                        elif usrIn == 'r':
                                                 if presentPlayers[i] > highestBet:
                                                         cmdOut = "9Raising. How much do you want to raise the bet by?"
                                                         sendDataToPlayer(x, cmdOut, port)
@@ -95,8 +96,8 @@ def bet (infoArray, port):
                                                 sendDataToPlayer(x, cmdOut, port)
                                                 validInput = False
         
-        reassign(infoArray, presentPlayers)
-        return [infoArray, presentPlayers]
+        reassign(infoArray, playersAvailable)
+        return infoArray, playersAvailable
 
 def shiftList(someList):
     newList = someList[1:] + someList[0]
@@ -153,7 +154,7 @@ for user in playerList:
     
 if gameChosen == "t":
     print("Running Texas Hold'em")
-    keepPlaying = True
+    keepGoing = True
     roundNumber = 1
     infoArray = [playerList] #Add Deck
     infoArray.append(deck.makedeck())
@@ -193,11 +194,11 @@ if gameChosen == "t":
             sendDataToPlayer(user,sendString,port)
         replies = 0
         currentPlayerArray = [infoArray,infoArray[0]]
-        currentPlayerArray = bet(currentPlayerArray[1],port)
+        currentPlayerArray = bet(infoArray, currentPlayerArray[1],port)
         infoArray = texas.plusRiver(infoArray)
-        currentPlayerArray = bet(currentPlayerArray[1],port)
+        currentPlayerArray = bet(infoArray, currentPlayerArray[1],port)
         infoArray = texas.plusRiver(infoArray)
-        currentPlayerArray = bet(currentPlayerArray[1],port)
+        currentPlayerArray = bet(infoArray, currentPlayerArray[1],port)
         #players choose hands start
         for user in currentPlayerArray[0]:
             cardString = ""
@@ -229,7 +230,7 @@ if gameChosen == "t":
                 winnerList.append(user[0])
         winnerString = "The pot taker is "
         for name in winnerList:
-            winnerString += "name" + " "
+            winnerString += name + " "
         for user in infoArray[0]:
             sendDataToPlayer(user,winnerString,port)
         infoArray[0] = shiftList(infoArray[0])                
@@ -249,6 +250,154 @@ if gameChosen == "t":
     for user in infoArray[0]:
         sendDataToPlayer(user,winner,port)
 
+if gameChosen == "t":
+    print("Running Blackjack")
+    keepGoing = True
+    infoArray = [playerList] #Add Deck
+    infoArray.append(deck.makedeck())
+    deck.shuffle(infoArray[1])
+    # River still necessary for infoArray to work
+    river = []
+    infoArray.append(river)
+    infoArray.append(0)
+    while(roundNumber <= maxRounds and keepGoing == True):
+        infoArray[1] = deck.makedeck()
+        deck.shuffle(infoArray[1])
+        infoArray[2] = []
+        for user in infoArray[0]: # Ante up
+            user[2] -= 1
+	blackjack.initialDeal(infoArray)
+        for user in infoArray[0]:
+            sendString = "Hand: "
+            for card in user[3]:
+                sendString += str(card) + " "
+            sendDataToPlayer(user,sendString,port)
+	    sendString = user[0] + "'s Card: " + user[3][0]
+	    for x in infoArray[0]:
+		if x[1] != user[1]:
+			sendDataToPlayer(x, sendString, port)
+            user.append(0)    # Creates bets
+      
+	currentPlayerArray = [infoArray, infoArray[0]]
+	currentPlayerArray = bet(infoArray, currentPlayerArray[1], port)
+	for user in currentPlayerArray[1]:
+		user.append(0)	# Point total
+		points = 0
+		for card in user[3]:
+			if card(rank) == 1:
+				cmdOut = "You have an ace. Is this a 1 or 11? (1/11)"
+				sendDataToPlayer(user, cmdOut, port)
+				(usrIn, user[1]) = UDPSock.recvfrom(buf)
+				usrIn = usrIn.decode('utf8')
+				if usrIn == '1':
+					points += 1
+				elif usrIn == '11':
+					points += 11
+				else:
+					cmdOut = "Invalid input."
+					sendDataToPlayer(user, cmdOut, port)
+			elif card(rank) >= 11 and card(rank) <= 13:
+				points += 10
+				cmdOut = "Points: " + points
+				sendDataToPlayer(user, cmdOut, port)
+			else:
+				points += card(rank)
+				cmdOut = "Points: " + points
+				sendDataToPlayer(user, cmdOut, port)
+		if points >= 9 and points <= 11:
+			cmdOut = "You can double down. Would you like to? (y/n)"
+			sendDataToPlayer(user, cmdOut, port)
+			(usrIn, user[1]) = UDPSock.recvfrom(buf)
+			usrIn = usrIn.decode('utf8')
+			if usrIn == 'y':
+				user[2] -= user[4]
+				infoArray[3] += user[4]
+				blackjack.hitPlayer(infoArray, user[1])
+				cmdOut = "New card: " + user[3][cardNum]
+				sendDataToPlayer(user, cmdOut, port)
+				cmdOut = "All cards: "
+				for card in user[3]:
+					cmdOut += card + " "
+				sendDataToPlayer(user, cmdOut, port)
+				wouldHit == False
+				user[5] = points
+			elif usrIn == 'n':
+				cmdOut = "You choose not to double down."
+				sendDataToPlayer(user, cmdOut, port)
+			else:
+				cmdOut = "Invalid input."
+				sendDataToPlayer(user, cmdOut, port)	
+		wouldHit = True
+		cardNum = 0
+		while wouldHit == True:
+			cmdOut = "Would you like to hit? (y/n)"
+			sendDataToPlayer(user, cmdOut, port)
+			(usrIn, user[1]) = UDPSock.recvfrom(buf)
+			usrIn = usrIn.decode('utf8')
+			if usrIn == 'y':
+				cmdOut = "You asked for a card."
+				sendDataToPlayer(user, cmdOut, port)
+				blackjack.hitPlayer(infoArray, user[1])
+				cmdOut = "New card: " + user[3][cardNum]
+				sendDataToPlayer(user, cmdOut, port)
+				cmdOut = "All cards: "
+				for card in user[3]:
+					cmdOut += card + " "
+				sendDataToPlayer(user, cmdOut, port)
+				wouldHit == True
+			elif usrIn == 'n':
+				cmdOut = "You denied a card."
+				sendDataToPlayer(user, cmdOut, port)
+				wouldHit == False
+ 
+        # Calculate hands
+	for user in infoArray[0]:
+		if user[5] = 0:
+			for card in user[3]:
+				if card(rank) == 1:
+					cmdOut = "You have an ace. Is this a 1 or 11? (1/11)"
+					sendDataToPlayer(user, cmdOut, port)
+					(usrIn, user[1]) = UDPSock.recvfrom(buf)
+					usrIn = usrIn.decode('utf8')
+					if usrIn == '1':
+						points += 1
+					elif usrIn == '11':
+						points += 11
+					else:
+						cmdOut = "Invalid input."
+						sendDataToPlayer(user, cmdOut, port)
+				elif card(rank) >= 11 and card(rank) <= 13:
+					points += 10
+					cmdOut = "Points: " + points
+					sendDataToPlayer(user, cmdOut, port)
+				else:
+					points += card(rank)
+					cmdOut = "Points: " + points
+					sendDataToPlayer(user, cmdOut, port)
+			user[5] = points
+					  
+        winnerList = []
+	highestPoints = 0
+	i = 0
+        for user in infoArray[0]:
+		if user[5] > highestPoints:
+			highestPoints = user[5]
+			winnerList[i] = user[1]
+		elif user[5] = highestPoints:
+			winnerList.append(user[1])
+			i += 1
+	
+	winnerString = "The pot taker is "
+        for name in winnerList:
+            winnerString += name + " "
+        for user in infoArray[0]:
+            sendDataToPlayer(user,winnerString,port)
+        infoArray[0] = shiftList(infoArray[0])                
+        for user in infoArray[0]:
+            if (user[2] <= 1):
+                keepGoing = False
+        roundNumber += 1
+    topPoints = 0
 else:
     print("Wrong game :( ")
 
