@@ -6,7 +6,6 @@ Outline:
 infoArray is the list of game data: player, deck, and river
 initialDeal(infoArray) - deals 3 cards to each player
 initRiver(infoArray) - creates and deals the flop
-dealCard(infoArray) - deals 1 card to each player
 plusRiver(infoArray) - deals 1 card to the community (called river here)
 replaceHand(infoArray, playerChoice) - replaces the player's hand to their choice of 5 cards from the river and original hand
 '''

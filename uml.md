@@ -32,7 +32,10 @@
 ### texas.py
 * game
 * functions
-  *
+  * initialDeal(infoArray) - clears player hand and deals 2 cards to each
+  * initRiver(infoArray) - clears river and draws 3 cards to it
+  * plusRiver(infoArray) - adds one card to river
+  * replaceHand(infoArray, playerChoice) - takes player's choice of 5 cards from hand and river and replaces their hand with it
  
 ### players.txt
 * contains list of players
