@@ -32,13 +32,21 @@ def call(infoArray, presentPlayers,  maxBet, currPlayerIp):
 		i += 1
 	infoArray[3] += betDiff
 
-def bet(infoArray, port):
+def reassign(infoArray, presentPlayers):
+	i = 0
+	for x in infoArray[0]:
+		for y in presentPlayers:
+			if x[1] == y[1]:
+				infoArray[0][i] = presentPlayers[i]
+		i += 1
+
+def bet (infoArray, port):
 	playerList = copy.copy(infoArray[0])
 	presentPlayers = copy.deepcopy(infoArray[0])
 	highestBet = 0
 	int i = 0
 	countCall = 0
-	validInput = True
+	validInput = False
 	while countCall != len(presentPlayers):
 		for x in presentPlayers:
 			if countCall != len(presentPlayers):
@@ -87,6 +95,7 @@ def bet(infoArray, port):
 						sendDataToPlayer(x, cmdOut, port)
 						validInput = False
 	
+	reassign(infoArray, presentPlayers)
 	return [infoArray, presentPlayers]
 
 def shiftList(someList):
