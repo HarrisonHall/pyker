@@ -4,6 +4,7 @@ import sys
 from socket import *
 import deck
 import hands
+import texas
 
 def sendDataToPlayer(player,data,port):
     try:
@@ -125,10 +126,10 @@ if gameChosen == "t":
         infoArray[2] = []
         for user in infoArray[0]: # Ante up
             user[2] -= 1
-        #deal to players*
         for user in infoArray[0]:
+            user[3] = []
             for x in range(3):
-                ##
+                user[3].append(deck.draw(infoArray[1]))
         for user in infoArray[0]:
             sendString = "Hand: "
             for card in user[3]:
@@ -140,40 +141,49 @@ if gameChosen == "t":
             message = message.decode('utf8')
             if (message[:3] != "msg"):
                 replies += 1
-        for x in range(3): #start river
-            infoArray[2].append(deck.draw(infoArray[1]))
+        infoArray = texas.initRiver(infoArray)
         for user in infoArray[0]:
             sendString = "River: " + "Hand: "
             for card in user[3]:
                 sendString += str(card) 
             sendDataToPlayer(user,sendString,port)
         replies = 0
-        while (replies < playerCount): # Check if users have replied to bet
-            (message, addr) = UDPSock.recvfrom(buf)
-            message = message.decode('utf8')
-            if (message[:3] != "msg"):
-                replies += 1
-        infoArray[2].append(deck.draw(infoArray[1])) #Add to river
-        while (replies < playerCount): # Check if users have replied to bet
-            (message, addr) = UDPSock.recvfrom(buf)
-            message = message.decode('utf8')
-            if (message[:3] != "msg"):
-                replies += 1
-        infoArray[2].append(deck.draw(infoArray[1]))# Add to river
-        while (replies < playerCount): # Check if users have replied to bet
-            (message, addr) = UDPSock.recvfrom(buf)
-            message = message.decode('utf8')
-            if (message[:3] != "msg"):
-                replies += 1
-        #Evaluate winner
-        #Send winner message
-        infoArray[0] = shiftList(infoArray[0])
-                
+        #bet
+        infoArray = texas.plusRiver(infoArray)
+        #bet
+        infoArray = texas.plusRiver(infoArray)
+        #bet
+        #players choose hands
+        topPoints = 0
+        winnerList = []
+        for user in infoArray[0]:
+            if (hands.evaluate(user[3]) > topPoints):
+                topPoints = hands.evaluate(user[3])
+        for user in infoArray[0]:
+            if (hands.evaluate(user[3] == topPoints)):
+                user[2] += pool / 2 #modify*
+                winnerList.append(user[0])
+        winnerString = "The pot taker is "
+        for name in winnerList:
+            winnerString += "name" + " "
+        for user in infoArray[0]:
+            sendDataToPlayer(user,winnerString,port)
+        infoArray[0] = shiftList(infoArray[0])                
         for user in infoArray[0]:
             if (user[2] <= 1):
-                #gameover code
             keepGoing = False
         roundNumber += 1
+    topPoints = 0
+    winner = ""
+    for user in infoArray[0]:
+        if (user[2] > topPoints):
+            topPoints = hands.evaluate(user[3])
+    for user in infoArray[0]:
+        if (user[2] == topPoints)):
+            winner = user[0]
+    winner = "The winner is " + winner
+    for user in infoArray[0]:
+        sendDataToPlayer(user,winner,port)
 
 else:
     print("Wrong game :( ")
