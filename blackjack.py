@@ -14,7 +14,7 @@ import deck
 import copy
 
 # Initial dealing of cards
-def initialDeal(infoArray)
+def initialDeal(infoArray):
 	playerList = copy.copy(infoArray[0])
 	dealDeck = copy.copy(infoArray[1])
 	for x in playerList:
@@ -25,7 +25,7 @@ def initialDeal(infoArray)
 	return infoArray
 
 # Hit (player asks for a card)
-def hitPlayer(infoArray, currIp)
+def hitPlayer(infoArray, currIp):
 	playerList = copy.copy(infoArray[0])
 	dealDeck = copy.copy(infoArray[1])
 	for x in playerList:
