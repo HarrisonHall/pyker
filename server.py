@@ -32,7 +32,7 @@ def call(infoArray, presentPlayers,  maxBet, currPlayerIp):
 		i += 1
 	infoArray[3] += betDiff
 
-def bet (infoArray, port):
+def bet(infoArray, port):
 	playerList = copy.copy(infoArray[0])
 	presentPlayers = copy.deepcopy(infoArray[0])
 	highestBet = 0
@@ -181,20 +181,40 @@ if gameChosen == "t":
                 sendString += str(card) 
             sendDataToPlayer(user,sendString,port)
         replies = 0
-        #bet
+        currentPlayerArray = [infoArray,infoArray[0]]
+        currentPlayerArray = bet(currentPlayerArray[1],port)
         infoArray = texas.plusRiver(infoArray)
-        #bet
+        currentPlayerArray = bet(currentPlayerArray[1],port)
         infoArray = texas.plusRiver(infoArray)
-        #bet
-        #players choose hands
+        currentPlayerArray = bet(currentPlayerArray[1],port)
+        #players choose hands start
+        for user in currentPlayerArray[0]:
+            cardString = ""
+            for card in range(len(user[3])):
+                cardString += str(card) + user[3][card]
+            cardString += " | "
+            for card in range(len(infoArray[2])):
+                cardString += str(card+2) + infoArray[2][card]
+            sendDataToPlayer(user,cardString,port)
+            totalCards = [user[3][0],user[3][1],infoArray[2][0],infoArray[2][1],infoArray[2][2],infoArray[2][3],infoArray[2][4]]
+            cardHandArray = []
+            while(len(cardHandArray) < 5):
+                sendDataToPlayer(user,"Type a number 0-6",port)
+                (usrIn,addr) = UDPSock.recvfrom(buf)
+		usrIn = usrIn.decode('utf8')
+                chosenCard = int(usrIn)
+                if totalCards[chosenCard] not in cardHandArray:
+                    cardHandArray.append(totalCards[chosenCard])
+            user[3] = cardHandArray
+        #players choose hands end
         topPoints = 0
         winnerList = []
-        for user in infoArray[0]:
+        for user in currentPlayerArray[1]:
             if (hands.evaluate(user[3]) > topPoints):
                 topPoints = hands.evaluate(user[3])
-        for user in infoArray[0]:
+        for user in currentPlayerArray[1]:
             if (hands.evaluate(user[3] == topPoints)):
-                user[2] += pool / 2 #modify*
+                user[2] += infoArray[3] / 2 #modify*
                 winnerList.append(user[0])
         winnerString = "The pot taker is "
         for name in winnerList:
