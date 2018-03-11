@@ -13,6 +13,47 @@ def sendDataToPlayer(player,data,port):
         print("Error: Did not send correctly.")
     newSock.close()
 
+def betsEqual(betArray):
+    initVal = betArray[0]
+    for bet in betArray:
+        if bet != initVal:
+            return False
+    return True
+
+def betsHighest(betsArray):
+    initVal = betArray[0]
+    for bet in betArray:
+        if bet > initVal:
+            initVal = bet
+    return initVal
+    
+def bet(infoArray,port):
+    messages = ""
+    replies = 0
+    bets = []
+    for user in range(len(infoArray)):
+        bets.append(user+1000)
+    while(betsEqual() == False): #Need to only let lower bets make it
+        (message, addr) = UDPSock.recvfrom(buf)
+        message = message.decode('utf8')
+        if (message[:3] != "msg"):
+            for user in range(len(infoArray[0])):
+                if (infoArray[0][user][1] == addr):
+                    if (infoArray[0][user][2] >= int(message)):
+                        bets[user] = int(message)
+                        infoArray[0][user][2] -= int(message)
+                    else:
+                        bets[user] = infoArray[0][user][2]
+                        infoArray[0][user][2] = 0
+        elif (message[:3] == "msg"):
+            messages += message[3:] + "\n"
+        elif (message == "chips"):
+            for user in infoArray[0]:
+                if user[1] == addr:
+                    sendDataToPlayer(user,str(user[2]),port)
+        for user in infoArray[0]:
+            sendDataToPlayer(user,messages,port)
+
 print("\nWelcome to Pyker!")
 print("Created by Harrison, Jackie, and Jacky")
 
@@ -60,36 +101,68 @@ while(playersJoined < playerCount):
 #Tell players game has begun
 print("\nThe game has begun.\n")
 for user in playerList:
-    sendDataToPlayer(user,"start",port)
+    sendDataToPlayer(user,gameChosen,port)
     
 if gameChosen == "t":
-    #Game logic goes here
-    print("Welcome to Texas Hold'em")
+    print("Running Texas Hold'em")
     keepPlaying = True
     roundNumber = 1
-    for user in playerList:
-        if (user[2] <= 0):
+    infoArray = [playerList] #Add Deck
+    for user in infoArray[0]:
+        if (user[2] <= 1):
             #gameover code
             keepGoing = False
     #make deck
     #shuffle deck
-    #collect pre-bet
     while(roundNumber <= maxRounds and keepGoing == True):
-        #deal to players
-        for user in player:
-            sendString = ""
+        for user in infoArray[0]: # Ante up
+            user[2] -= 1
+        #deal to players*
+        for user in infoArray[0]:
+            sendString = "Hand: "
+            for card in user[3]:
+                sendString += str(card) 
             sendDataToPlayer(user,sendString,port)
-        #check if users have replied
         replies = 0
-        while (replies < playerCount):
+        while (replies < playerCount): # Check if users have replied to bet
             (message, addr) = UDPSock.recvfrom(buf)
             message = message.decode('utf8')
             if (message[:3] != "msg"):
                 replies += 1
+        #set the river
+        for user in infoArray[0]:
+            sendString = "River: " + "Hand: "
+            for card in user[3]:
+                sendString += str(card) 
+            sendDataToPlayer(user,sendString,port)
+        replies = 0
+        while (replies < playerCount): # Check if users have replied to bet
+            (message, addr) = UDPSock.recvfrom(buf)
+            message = message.decode('utf8')
+            if (message[:3] != "msg"):
+                replies += 1
+        #add one to river
+        while (replies < playerCount): # Check if users have replied to bet
+            (message, addr) = UDPSock.recvfrom(buf)
+            message = message.decode('utf8')
+            if (message[:3] != "msg"):
+                replies += 1
+        #add one to river
+        while (replies < playerCount): # Check if users have replied to bet
+            (message, addr) = UDPSock.recvfrom(buf)
+            message = message.decode('utf8')
+            if (message[:3] != "msg"):
+                replies += 1
+        
+
+                
+        for user in infoArray[0]:
+            if (user[2] <= 1):
+                #gameover code
+            keepGoing = False
         roundNumber += 1
-        #do whatever
 
 else:
     print("Wrong game :( ")
-    
+pp    
 UDPSock.close()
