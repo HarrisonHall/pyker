@@ -22,7 +22,7 @@ def betsEqual(betArray):
             return False
     return True
 
-def betsHighest(betsArray):
+def betsHighest(betArray):
     initVal = betArray[0]
     for bet in betArray:
         if bet > initVal:
@@ -55,6 +55,7 @@ def bet(infoArray,port):
                     sendDataToPlayer(user,str(user[2]),port)
         for user in infoArray[0]:
             sendDataToPlayer(user,messages,port)
+    return infoArray
 
 def shiftList(someList):
     newList = someList[1:] + someList[0]
@@ -114,10 +115,6 @@ if gameChosen == "t":
     keepPlaying = True
     roundNumber = 1
     infoArray = [playerList] #Add Deck
-    for user in infoArray[0]:
-        if (user[2] <= 1):
-            #gameover code
-            keepGoing = False
     infoArray.append(deck.makedeck())
     deck.shuffle(infoArray[1])
     river = []
@@ -130,7 +127,8 @@ if gameChosen == "t":
             user[2] -= 1
         #deal to players*
         for user in infoArray[0]:
-            for x in range(3)
+            for x in range(3):
+                ##
         for user in infoArray[0]:
             sendString = "Hand: "
             for card in user[3]:
