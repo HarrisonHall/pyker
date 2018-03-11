@@ -11,6 +11,7 @@ During development we had a few stretch goals
 * A help menu
 * In-game hand statistics
 * A gui version
+
 During development we did have time to add one more game, Blackjack. We also were able to impliment a primitive messaging system. 
 
 ## Getting Started
