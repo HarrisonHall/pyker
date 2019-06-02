@@ -12,6 +12,9 @@ serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serversocket.connect((host, port))
 
 buf = ""
-while buf != END_KEY:
-    buf = serversocket.recv(100)
+buf = serversocket.recv(100)
+print(buf)
+while END_KEY not in buf:
     serversocket.sendall(input(">>> "))
+    buf = serversocket.recv(100)
+    print(buf.replace("GAME END",""))

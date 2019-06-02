@@ -13,7 +13,23 @@ class Player:
         self.ip_address = ip_address
         self.hand = []
         self.connection = connection
-        self.last_command = ""
+        self.last_command = "h"
+        
+    def busted(self):
+        tot = 0
+        for card in hand:
+            tot += card.val()
+        return True if (tot > 21) else return False
+    
+    def is_over(self):
+        return (self.busted() or self.last_command == "q")
+    
+    def score(self):
+        tot = 0
+        for card in hand:
+            tot += card.val()
+        return tot    
+        
 
 ## Connect
 try:
@@ -31,6 +47,18 @@ while len(players) < number_of_players:
     players.append(Player(client_address,connection))
 
 ## Play game (blackjack)
-### TODO
-
-
+deck = deck.Deck()
+while [player.is_over() for player in players] != [True for player in players]:
+    for player in players:
+        if player.last_command == "h":
+            player.hand.append(deck.draw())
+            player.last_command = ""
+            while player.last_command not in ["h","q"]:
+                player.connection.sendall(str(player.hand)+" [h]it or [q]uit?")
+                player.last_command = player.connection.recv(10)
+                
+## End game                
+for player in players:
+    player.sendall("Player Scores: "+str([str(player.ip_address)+str(player.score()) for player in players]) + "GAME END")
+    player.connection.close()
+    
